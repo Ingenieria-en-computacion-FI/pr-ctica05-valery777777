@@ -1,11 +1,20 @@
 #include <stdlib.h>
 #include "nodo.h"
 
-Nodo* nodo_crear(int dato)
+Nodo* nodo_crear(int d)
 {
-    // Todo: implementar la función }
+    Nodo *n;
+    n=(Nodo *)malloc(sizeof(Nodo));
+    if(n!=NULL){
+    n->siguiente=NULL;
+    n->dato=d;
+    }
+    return n;
+}
 
 void nodo_destruir(Nodo* nodo)
 {
-    // Todo: implementar la función 
+    if(!nodo->siguiente){
+        free(nodo);
+    }
 }
