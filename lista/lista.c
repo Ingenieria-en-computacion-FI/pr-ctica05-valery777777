@@ -1,93 +1,89 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "lista.h"
 
 Lista* lista_crear()
 {
-    
-    /*
-    TODO:
-
-    1 Crear un apuntador a lista
-    2 Reswevar memoria para lista
-    3 Devolver la lista
-    */
+    Lista *l;
+    l=(Lista*)malloc(sizeof(Lista));
+    l->head=NULL;
+    l->tail=NULL;
+    return l;
 }
 
-int lista_vacia(Lista* lista)
+bool lista_vacia(Lista* l)
 {
-    
+    if(l->head==NULL){
+        return 1;
+    }else{
+        return 0;
+    }
 }
 
-void lista_insertar_head(Lista* lista, int dato)
+void lista_insertar_head(Lista* l, int dato)
 {
-    /*
-    TODO:
+    Nodo *NewNode= nodo_crear(dato);
 
-    1 Crear nuevo nodo
-    2 Si lista está vacía:
-        head y tail apuntan al nuevo nodo
-    3 Si no:
-        head apunta al nuevo nodo
-        actualizar tail
-    */
+    if(lista_vacia(l)){
+        l->head = l->tail = NewNode;
+    }else{
+        NewNode->siguiente = l->head;
+        l->head = NewNode;
+    }
 }
 
-void lista_insertar_tail(Lista* lista, int dato)
+void lista_insertar_tail(Lista* l, int dato)
 {
-    /*
-    TODO:
-
-    1 Crear nuevo nodo
-    2 Si lista está vacía:
-        head y tail apuntan al nuevo nodo
-    3 Si no:
-        tail->siguiente apunta al nuevo nodo
-        actualizar tail
-    */
+    Nodo *NewNode=nodo_crear(dato);
+    if(lista_vacia(l)){
+        l->head=l->tail=NewNode;
+    }else{
+        l->tail->siguiente=NewNode;
+        l->tail=NewNode;
+    }
 }
 
-int lista_eliminar_head(Lista* lista)
+int lista_eliminar_head(Lista* l)
 {
-    /*
-    TODO:
+    if(lista_vacia(l))
+        return -1;
 
-    1 Si lista vacía regresar error (-1)
-    2 Guardar nodo a eliminar
-    3 Mover head al siguiente nodo
-    4 Si lista queda vacía:
-       tail = NULL
-    5 Liberar nodo
-    6 Regresar dato eliminado
-    */
+    Nodo *tmp = l->head;
+    int dato = tmp->dato;
+    l->head=l->head->siguiente;
 
-    return -1;
+    if(lista_vacia(l))
+        l->tail=NULL;
+
+    nodo_destruir(tmp);
+    return dato;
 }
 
-int lista_eliminar_tail(Lista* lista)
+int lista_eliminar_tail(Lista* l)
 {
-    /*
-    TODO:
+    if(lista_vacia(l))
+        return -1;
+    int dato=l->tail->dato;
 
-    1 Si lista vacía regresar error
-    2 Si solo hay un nodo:
-        guardar dato
-        liberar nodo
-        head = NULL
-        tail = NULL
-    3 Si hay varios nodos:
-        recorrer lista hasta el nodo anterior al tail
-    4 actualizar tail
-    5 liberar nodo eliminado
-    6 regresar dato
-    */
-
-    return -1;
+    if(l->head==l->tail){
+        nodo_destruir(l->head);
+        l->head=l->tail=NULL;
+    }else{
+        Nodo *actual=l->head;
+        while(actual->siguiente != l->tail){
+            actual = actual->siguiente;
+        }
+        nodo_destruir(l->tail);
+        l->tail=actual;
+        l->tail->siguiente=NULL;
+    }
+    return dato;
 }
 
-void lista_imprimir(Lista* lista)
+void lista_imprimir(Lista* l)
 {
-    Nodo* actual = lista->head;
+    Nodo* actual = l->head;
 
     while(actual != NULL)
     {
@@ -98,13 +94,12 @@ void lista_imprimir(Lista* lista)
     printf("NULL\n");
 }
 
-void lista_destruir(Lista* lista)
+void lista_destruir(Lista* l)
 {
-    /*
-    TODO:
-
-    1 si la lista no esta vacia
-    2 borrar el primero o el último 
-    3 hacer que lista apunte a nulo
-    */
+    while(!lista_vacia(l)){
+        lista_vacia(l);
+            lista_eliminar_head(l);
+        free(l);
+        l=NULL;
+    }
 }
