@@ -1,13 +1,15 @@
 #ifndef PILA_H
 #define PILA_H
 
+#include <stdbool.h>
+
 #include "../lista/lista.h"
 
 typedef Lista Pila;
 
 Pila* pila_crear();
 
-int pila_vacia(Pila* pila);
+bool pila_vacia(Pila* pila);
 
 /*
 TODO
