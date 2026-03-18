@@ -2,7 +2,11 @@
 
 Cola* cola_crear()
 {
-    return lista_crear();
+    Cola *c;
+    c=(Cola*)malloc(sizeof(Cola));
+    c->head=NULL;
+    c->tail=NULL;
+    return c;
 }
 
 bool cola_vacia(Cola* cola)
